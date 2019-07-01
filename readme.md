@@ -1,7 +1,7 @@
-# Node Js Learning 
+# Node Js Learning
+
 #### Trung Ng
 
-====================================================
+---
 
-Building an Store app follow along with [LearnNode](learnnode.com) of Wesbos
-
+Building an Store app follow along with [LearnNode](http://learnnode.com) of Wesbos

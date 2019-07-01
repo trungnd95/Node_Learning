@@ -1,24 +1,29 @@
 mixin storeForm(store = {})
   - const storeNotEmpty = Object.keys(store).length > 0 ? true : false
-  form(action=`/stores/${storeNotEmpty ? `${store._id}?_method=PATCH` : ''}`, method='POST', class="card")
+  form(action=`/stores/${storeNotEmpty ? `${store._id}?_method=PATCH` : ''}`, method='POST', class="card" enctype="multipart/form-data")
     label(for="name") Name
     input(type="text" name="name" placeholder=`${storeNotEmpty ? store.name : ''}` value=`${storeNotEmpty ? store.name : ''}`)
 
     label(for="description") Description
     textarea(name="description")= storeNotEmpty ? store.description : ''
-    
+
+    label(for="photo") photo
+    input(type="file" name="photo" id="photo" accept="image/gif, image/png, image/jpeg")
+    if store.photo
+      img(src=`/uploads/${store.photo}` alt=store.name width=200)
+
     label(for="address") Address
-    input(type="text" name="location[address]" value=`${storeNotEmpty ? store.location.address : ''}`)
+    input(type="text" id="address" name="location[address]" value=`${storeNotEmpty ? store.location.address : ''}`)
 
     label(for="address LNG") Address LNG
-    input(type="text" name="location[coordinates][0]" value=`${storeNotEmpty ? store.location.coordinates[0] : ''}`)
+    input(type="text" id="address_lng" name="location[coordinates][0]" value=`${storeNotEmpty ? store.location.coordinates[0] : ''}`)
 
     label(for="address LAT") Address LAT
-    input(type="text" name="location[coordinates][1]" value=`${storeNotEmpty ? store.location.coordinates[1] : ''}`)
+    input(type="text" id="address_lat" name="location[coordinates][1]" value=`${storeNotEmpty ? store.location.coordinates[1] : ''}`)
 
     - const choices = ["Wifi", 'Open Late', 'Family Friendly', 'Vegatarian', 'Licensed']
     - const tags = store.tags || []
-    
+
     ul.tags
       each choice in choices
         .tag.tag__choice
