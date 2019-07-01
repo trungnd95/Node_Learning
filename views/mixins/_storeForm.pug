@@ -1,16 +1,28 @@
 mixin storeForm(store = {})
-  form(action="/add", method="POST", class="card")
+  - const storeNotEmpty = Object.keys(store).length > 0 ? true : false
+  form(action=`/stores/${storeNotEmpty ? `${store._id}?_method=PATCH` : ''}`, method='POST', class="card")
     label(for="name") Name
-    input(type="text" name="name")
+    input(type="text" name="name" placeholder=`${storeNotEmpty ? store.name : ''}` value=`${storeNotEmpty ? store.name : ''}`)
 
     label(for="description") Description
-    textarea(name="description")
+    textarea(name="description")= storeNotEmpty ? store.description : ''
+    
+    label(for="address") Address
+    input(type="text" name="location[address]" value=`${storeNotEmpty ? store.location.address : ''}`)
+
+    label(for="address LNG") Address LNG
+    input(type="text" name="location[coordinates][0]" value=`${storeNotEmpty ? store.location.coordinates[0] : ''}`)
+
+    label(for="address LAT") Address LAT
+    input(type="text" name="location[coordinates][1]" value=`${storeNotEmpty ? store.location.coordinates[1] : ''}`)
 
     - const choices = ["Wifi", 'Open Late', 'Family Friendly', 'Vegatarian', 'Licensed']
+    - const tags = store.tags || []
+    
     ul.tags
       each choice in choices
         .tag.tag__choice
-          input(type="checkbox", id=choice, value=choice name="tags")
+          input(type="checkbox", id=choice, value=choice name="tags" checked=(tags.includes(choice)) )
           label(for=choice)= choice
 
-    input(type="submit", value="Save" class="button")
+    input(type="submit", value=`${storeNotEmpty ? 'Update' : 'Save'}`, class="button")
