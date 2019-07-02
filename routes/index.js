@@ -32,4 +32,6 @@ router.patch(
   catchErrors(storeController.resize),
   catchErrors(storeController.updateStore)
 );
+router.get("/stores/:slug", catchErrors(storeController.showStore));
+router.get("/tags/:tag*?", catchErrors(storeController.getStoreByTag));
 module.exports = router;
