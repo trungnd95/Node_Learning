@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const storeController = require("../controllers/storeController");
+const userController = require("../controllers/userController");
 
 // Do work here
 // router.get("/", (req, res) => {
@@ -15,8 +16,10 @@ const storeController = require("../controllers/storeController");
 // });
 
 const { catchErrors } = require("../handlers/errorHandlers");
-
+//------------- Homepage
 router.get("/", storeController.homePage);
+
+//------------- Store Group
 router.get("/stores/add", storeController.addStore);
 router.post(
   "/stores",
@@ -34,4 +37,8 @@ router.patch(
 );
 router.get("/stores/:slug", catchErrors(storeController.showStore));
 router.get("/tags/:tag*?", catchErrors(storeController.getStoreByTag));
+
+//------------- User Authentication
+router.get("/login", userController.loginForm);
+
 module.exports = router;
