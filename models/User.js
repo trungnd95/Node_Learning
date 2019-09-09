@@ -19,10 +19,19 @@ const userSchema = new Schema({
     type: String,
     require: true,
     trim: true
-  }
+  },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
-userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
+userSchema.virtual('gravatar').get(function () {
+  const hash = md5(this.email);
+  return `https://gravatar.com/avatar/${hash}?s=200`;
+})
+
+userSchema.plugin(passportLocalMongoose, {
+  usernameField: "email"
+});
 userSchema.plugin(mongodbErrorHandler);
 
 module.exports = mongoose.model("User", userSchema);

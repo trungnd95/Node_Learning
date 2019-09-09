@@ -11,7 +11,9 @@ const multerOptions = {
     if (isPhoto) {
       next(null, true);
     } else {
-      next({ message: "That filetype isn't allowed!" }, false);
+      next({
+        message: "That filetype isn't allowed!"
+      }, false);
     }
   }
 };
@@ -21,7 +23,9 @@ exports.homePage = (req, res) => {
 };
 
 exports.addStore = (req, res) => {
-  res.render("addStore", { title: "Add Store" });
+  res.render("addStore", {
+    title: "Add Store"
+  });
 };
 
 //----- Files upload middleware
@@ -53,17 +57,25 @@ exports.createStore = async (req, res) => {
 
 exports.getStores = async (req, res) => {
   const stores = await Store.find();
-  res.render("stores", { title: "Stores", stores });
+  res.render("stores", {
+    title: "Stores",
+    stores
+  });
 };
 
 exports.editStore = async (req, res) => {
   const store = await Store.findById(req.params.id);
-  res.render("editStore", { title: `Edit ${store.name}`, store });
+  res.render("editStore", {
+    title: `Edit ${store.name}`,
+    store
+  });
 };
 
 exports.updateStore = async (req, res) => {
   req.body.location.type = "Point";
-  const store = await Store.findOneAndUpdate({ _id: req.params.id }, req.body, {
+  const store = await Store.findOneAndUpdate({
+    _id: req.params.id
+  }, req.body, {
     new: true,
     runValidators: true
   }).exec();
@@ -77,18 +89,32 @@ exports.updateStore = async (req, res) => {
 };
 
 exports.showStore = async (req, res, next) => {
-  const store = await Store.findOne({ slug: req.params.slug });
+  const store = await Store.findOne({
+    slug: req.params.slug
+  });
   if (!store) return next();
-  res.render("showStore", { store, title: store.name });
+  res.render("showStore", {
+    store,
+    title: store.name
+  });
 };
 
 exports.getStoreByTag = async (req, res) => {
   const tag = req.params.tag;
-  const tagQuery = tag || { $exists: true };
+  const tagQuery = tag || {
+    $exists: true
+  };
   const tagsPromise = Store.getTagsList();
-  const storesPromise = Store.find({ tags: tagQuery });
+  const storesPromise = Store.find({
+    tags: tagQuery
+  });
 
   const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
 
-  res.render("tags", { tags, tag, stores, title: "Tags" });
+  res.render("tags", {
+    tags,
+    tag,
+    stores,
+    title: "Tags"
+  });
 };

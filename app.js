@@ -13,6 +13,7 @@ const routes = require("./routes/index");
 const helpers = require("./helpers");
 const errorHandlers = require("./handlers/errorHandlers");
 const methodOverride = require("method-override");
+const toastr = require('express-toastr');
 require("./handlers/passport");
 
 // create our Express app
@@ -27,7 +28,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(methodOverride("_method"));
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
@@ -44,7 +47,9 @@ app.use(
     key: process.env.KEY,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection
+    })
   })
 );
 
@@ -54,6 +59,7 @@ app.use(passport.session());
 
 // // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests
 app.use(flash());
+app.use(toastr())
 
 // pass variables to our templates + all requests
 app.use((req, res, next) => {

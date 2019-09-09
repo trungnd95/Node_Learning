@@ -16,12 +16,14 @@ const authController = require("../controllers/authController");
 //   });
 // });
 
-const { catchErrors } = require("../handlers/errorHandlers");
+const {
+  catchErrors
+} = require("../handlers/errorHandlers");
 //------------- Homepage
 router.get("/", storeController.homePage);
 
 //------------- Store Group
-router.get("/stores/add", storeController.addStore);
+router.get("/stores/add", authController.isLoggedIn, storeController.addStore);
 router.post(
   "/stores",
   storeController.upload,
@@ -37,10 +39,11 @@ router.patch(
   catchErrors(storeController.updateStore)
 );
 router.get("/stores/:slug", catchErrors(storeController.showStore));
-router.get("/tags/:tag*?", catchErrors(storeController.getStoreByTag));
+router.get("/tags/:tag?", catchErrors(storeController.getStoreByTag));
 
 //------------- User Authentication
 router.get("/login", userController.loginForm);
+router.post("/login", authController.login);
 router.get("/register", userController.registerForm);
 
 //1. Validate the register data
@@ -52,4 +55,12 @@ router.post(
   userController.register,
   authController.login
 );
+
+router.get("/account", authController.isLoggedIn, userController.account);
+router.post("/account", catchErrors(userController.updateAccount));
+router.post("/account/forgot", catchErrors(authController.forgot));
+router.get("/account/reset/:token", catchErrors(authController.reset));
+router.post("/account/reset/:token", authController.confirmedPasswords, catchErrors(authController.update));
+
+router.get("/logout", authController.logout);
 module.exports = router;

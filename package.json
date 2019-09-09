@@ -7,7 +7,7 @@
   },
   "scripts": {
     "prod": "node ./start.js",
-    "watch": "nodemon ./start.js --ignore public/",
+    "watch": "nodemon --inspect ./start.js --ignore public/",
     "start": "concurrently \"npm run watch\" \"npm run assets\" --names \"💻,📦\" --prefix name",
     "assets": "webpack -w --display-max-modules 0",
     "sample": "node ./data/load-sample-data.js",
@@ -26,6 +26,7 @@
     "es6-promisify": "5.0.0",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
+    "express-toastr": "^2.0.2",
     "express-validator": "3.1.2",
     "faker": "4.1.0",
     "forever": "0.15.3",
