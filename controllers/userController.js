@@ -53,7 +53,7 @@ exports.register = async (req, res, next) => {
   next(); // pass to authController.login
 };
 
-exports.account = (req, res) => {
+exports.editAccount = (req, res) => {
   res.render('editAccount', {
     title: "Edit your account"
   });

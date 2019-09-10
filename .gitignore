@@ -1,1 +1,5 @@
 node_modules
+*.log
+haters/ 
+.variables.env
+
